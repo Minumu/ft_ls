@@ -7,7 +7,7 @@ void	print_l(t_ls *ls, char *name_dir, t_addit *addit)
 	temp = ls;
 	if (addit->flag_dir != 0)
 		ft_printf("%s:\n", name_dir);
-	if (addit->l == 1 && ls != NULL)
+	if (addit->l == 1 && ls != NULL && name_dir != NULL)
 	{
 		count_total(ls, addit);
 		ft_printf("total %lli\n", addit->total);
@@ -117,13 +117,15 @@ void	record_files(char **av, int i, int ac, t_ls **ls, t_addit *addit)
 	}
 	if (*ls != NULL)
 	{
+		if (addit->t == 1)
+			sorting_bytime(ls, NULL);
 		record_stat(*ls, addit, NULL, st);
 		start_print(NULL, *ls, addit);
 		addit->flag_file = 1;
 	}
 }
 
-void	sort_av(char **av, int i, t_ls **avc, t_addit *addit)
+void	sorting_av(char **av, int i, t_ls **avc, t_addit *addit)
 {
 	while (i < addit->ac_g)
 	{
@@ -132,7 +134,7 @@ void	sort_av(char **av, int i, t_ls **avc, t_addit *addit)
 	}
 	sorting(avc);
 	if (addit->t == 1)
-		sorting_time(avc, NULL);
+		sorting_bytime(avc, NULL);
 }
 
 int		main(int ac, char **av)
@@ -153,7 +155,7 @@ int		main(int ac, char **av)
 		return (0);
 	if (i == 0)
 		av[i] = ".";
-	sort_av(av, i, &avc, addit);
+	sorting_av(av, i, &avc, addit);
 	printf_noexist(av, i, ac);
 	record_files(av, i, ac, &ls, addit);
 	temp = avc;
