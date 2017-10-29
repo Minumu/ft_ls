@@ -17,8 +17,7 @@ t_addit		*init_addit(int ac)
 	return (addit);
 }
 
-
-void	ft_ls_clear(t_ls **begin_list)
+void		ft_ls_clear(t_ls **begin_list)
 {
 	t_ls *current;
 	t_ls *next;
@@ -35,7 +34,7 @@ void	ft_ls_clear(t_ls **begin_list)
 	*begin_list = NULL;
 }
 
-void	clean_list(t_all **all)
+void		clean_list(t_all **all)
 {
 	t_all *temp;
 	t_all *temp1;
