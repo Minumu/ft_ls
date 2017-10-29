@@ -52,3 +52,21 @@ void		clean_list(t_all **all)
 		free(temp);
 	}
 }
+
+void			free_double_arr(char **arr)
+{
+	int i;
+
+	i = 0;
+	if (arr == NULL)
+		return ;
+	else
+	{
+		while (arr[i])
+		{
+			ft_strdel(&arr[i]);
+			i++;
+		}
+		free(arr);
+	}
+}

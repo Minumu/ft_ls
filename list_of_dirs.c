@@ -5,6 +5,8 @@ void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
 	DIR *dir;
 	char 	*path;
 	char *temp_path;
+	char **split;
+	struct stat st;
 
 	if (prev_dir != NULL)
 	{
@@ -17,8 +19,19 @@ void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
 	dir = opendir(path);
 	if (dir == NULL)
 	{
+		lstat(path, &st);
+		if (S_ISDIR(st.st_mode))
+		{
+			int i = 0;
+			split = ft_strsplit(path, '/');
+			while (split[i + 1])
+				i++;
+			if (*all != NULL || addit->flag_file == 1)
+				ft_printf("\n");
+			ft_printf("%s:\nls: %s: Permission denied\n", path, split[i]);
+			free_double_arr(split);
+		}
 		ft_strdel(&path);
-		return ;
 	}
 	else
 	{

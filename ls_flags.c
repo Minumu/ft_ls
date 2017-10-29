@@ -34,6 +34,8 @@ int		record_flags(char **av, int i, int j, t_addit *addit)
 			addit->r = 1;
 		else if (av[i][j] == 't')
 			addit->t = 1;
+		else if (av[i][j] == '1')
+			;
 		else
 		{
 			ft_printf("ls: illegal option -- %c\n"
@@ -49,7 +51,7 @@ int		check_flags(int ac, char **av, t_addit *addit, int i)
 {
 	int j;
 
-	while (++i < ac)
+	while (i < ac)
 	{
 		j = 0;
 		if (av[i][j] == '-')
@@ -69,6 +71,7 @@ int		check_flags(int ac, char **av, t_addit *addit, int i)
 		}
 		else
 			return (i);
+		i++;
 	}
 	return (0);
 }

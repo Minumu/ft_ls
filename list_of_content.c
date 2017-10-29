@@ -42,7 +42,7 @@ t_ls	*begin_ls(DIR *dir, char *name_dir, t_addit *addit)
 			ft_list_push_back(&ls, sd->d_name);
 	}
 	if (addit->t == 1)
-		sorting_time(&ls, name_dir);
+		sorting_bytime(&ls, name_dir);
 	else
 		sorting(&ls);
 	record_stat(ls, addit, name_dir, st);

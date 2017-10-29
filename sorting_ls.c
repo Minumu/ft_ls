@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void	do_sorting_time(t_ls **ls)
+void	do_sorting_bytime(t_ls **ls)
 {
 	t_ls	*curr;
 	t_ls	*next;
@@ -28,7 +28,7 @@ void	do_sorting_time(t_ls **ls)
 	}
 }
 
-void	sorting_time(t_ls **ls, char *data1)
+void	sorting_bytime(t_ls **ls, char *data1)
 {
 	char *temp_d;
 	char *dir;
@@ -49,7 +49,7 @@ void	sorting_time(t_ls **ls, char *data1)
 		temp = temp->next;
 		ft_strdel(&dir);
 	}
-	do_sorting_time(ls);
+	do_sorting_bytime(ls);
 }
 
 void	sorting(t_ls **sort)

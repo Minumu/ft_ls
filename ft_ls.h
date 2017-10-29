@@ -58,13 +58,11 @@ typedef struct		s_all
 
 void	ft_ls_clear(t_ls **begin_list);
 
-void	sort_av(char **av, int i, t_ls **avc, t_addit *addit);
-
 void	ft_list_push_back(t_ls **begin_list, char *data);
 t_ls	*begin_ls(DIR *dir, char *name_dir, t_addit *addit);
 void	record_stat(t_ls *ls, t_addit *addit, char *data1, struct stat st);
 void		sorting(t_ls **sort);
-void		sorting_time(t_ls **ls, char *data1);
+void		sorting_bytime(t_ls **ls, char *data1);
 
 void	ft_list_reverse(t_ls **begin_list);
 int		check_flags(int ac, char **av, t_addit *addit, int i);
@@ -85,5 +83,7 @@ void	clean_list(t_all **all);
 void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit);
 //void	do_ls(char *av, t_all **all, char *prev_dir, t_addit *addit);
 void	do_ls(DIR *dir, char *path, t_all **all, t_addit *addit);
+
+void			free_double_arr(char **arr);
 
 #endif

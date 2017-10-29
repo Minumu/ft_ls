@@ -89,11 +89,11 @@ int		check_empty_av(char **av, int i)
 	return (1);
 }
 
-void	printf_noexist(char **av, int i, int ac)
+void	printf_noexist(char **av, int i, t_addit *addit)
 {
 	struct stat st;
 
-	while (i < ac)
+	while (i < addit->ac_g)
 	{
 		if (lstat(av[i], &st) == -1)
 			ft_printf("ls: %s: No such file or directory\n", av[i]);
@@ -109,7 +109,7 @@ void	record_files(char **av, int i, int ac, t_ls **ls, t_addit *addit)
 	while (i < ac)
 	{
 		dir = opendir(av[i]);
-		if (dir == NULL && lstat(av[i], &st) == 0)
+		if (dir == NULL && lstat(av[i], &st) == 0 && !(S_ISDIR(st.st_mode)))
 			ft_list_push_back(ls, av[i]);
 		i++;
 		if (dir != NULL)
@@ -150,13 +150,17 @@ int		main(int ac, char **av)
 	ls = NULL;
 	avc = NULL;
 	addit = init_addit(ac);
-	i = check_flags(ac, av, addit, 0);
+	if ((i = check_flags(ac, av, addit, 1)) == -1)
+		return (0);
 	if (check_empty_av(av, i) == 0)
 		return (0);
 	if (i == 0)
+	{
+		addit->ac_g = 1;
 		av[i] = ".";
+	}
 	sorting_av(av, i, &avc, addit);
-	printf_noexist(av, i, ac);
+	printf_noexist(av, i, addit);
 	record_files(av, i, ac, &ls, addit);
 	temp = avc;
 	while (temp)
