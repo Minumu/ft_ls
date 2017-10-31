@@ -38,13 +38,16 @@ t_ls	*begin_ls(DIR *dir, char *name_dir, t_addit *addit)
 	ls = NULL;
 	while ((sd = readdir(dir)) != NULL)
 	{
-		if (sd->d_name[0] != '.')
+		if (addit->a == 1)
+			ft_list_push_back(&ls, sd->d_name);
+		else if (sd->d_name[0] != '.')
 			ft_list_push_back(&ls, sd->d_name);
 	}
+	sorting(&ls);
 	if (addit->t == 1)
 		sorting_bytime(&ls, name_dir);
-	else
-		sorting(&ls);
+	if (addit->r == 1)
+		ft_list_reverse(&ls);
 	record_stat(ls, addit, name_dir, st);
 	return (ls);
 }

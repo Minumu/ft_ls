@@ -28,6 +28,7 @@ typedef struct		s_addit
 	int 			flag_dir;
 	int 			flag_file;
 	blkcnt_t 		total;
+	int 			width[4];
 }					t_addit;
 
 typedef struct		s_ls

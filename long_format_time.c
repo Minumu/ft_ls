@@ -28,20 +28,23 @@ void	choose_time(t_ls *ls, time_t time_m)
 	char *temp_mon;
 	char *temp_day;
 	char *temp_hour;
+	char **split;
 
 	temp_time = ft_strdup(ctime(&time_m));
+	split = ft_strsplit(temp_time, ' ');
+	temp_mon = ft_strsub(temp_time, 4, 4);
+	temp_day = ft_strsub(temp_time, 8, 3);
 	if (find_abs((int)(time(NULL) - time_m)) < HALF)
-	{
-		temp_mon = ft_strsub(temp_time, 4, 4);
-		temp_day = ft_strsub(temp_time, 8, 3);
 		temp_hour = ft_strsub(temp_time, 11, 5);
-	}
 	else
 	{
-		temp_mon = ft_strsub(temp_time, 4, 4);
-		temp_day = ft_strsub(temp_time, 8, 3);
-		temp_hour = ft_strsub(temp_time, 19, 5);
+		temp_hour = ft_strdup(split[4]);
+		free_double_arr(split);
+		split = ft_strsplit(temp_hour, '\n');
+		ft_strdel(&temp_hour);
+		temp_hour = ft_strjoin(" ", split[0]);
 	}
+	free_double_arr(split);
 	ft_strdel(&temp_time);
 	record_time(ls, temp_day, temp_mon, temp_hour);
 }

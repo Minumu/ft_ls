@@ -8,7 +8,9 @@ void	count_total(t_ls *ls, t_addit *addit)
 	addit->total = 0;
 	while (temp)
 	{
-		if (temp->name[0] != '.')
+		if (addit->a == 1)
+			addit->total += temp->block;
+		else if (temp->name[0] != '.')
 			addit->total += temp->block;
 		temp = temp->next;
 	}
