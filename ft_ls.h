@@ -3,13 +3,13 @@
 
 # include <dirent.h>
 # include "libft/include/libft.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <time.h>
-#include <pwd.h>
-#include <grp.h>
-#include <uuid/uuid.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <time.h>
+# include <pwd.h>
+# include <grp.h>
+# include <uuid/uuid.h>
 
 # define HALF 15778463
 
@@ -25,6 +25,8 @@ typedef struct		s_addit
 	int 			r;
 	int 			a;
 	int 			t;
+	int 			cs;
+	int 			ct;
 	int 			flag_dir;
 	int 			flag_file;
 	blkcnt_t 		total;
@@ -59,17 +61,23 @@ typedef struct		s_all
 
 void	ft_ls_clear(t_ls **begin_list);
 
+int		check_arguments(t_addit *addit, char **av, t_ls **avc);
+t_addit		*init_addit(int ac);;
 void	ft_list_push_back(t_ls **begin_list, char *data);
 t_ls	*begin_ls(DIR *dir, char *name_dir, t_addit *addit);
-void	record_stat(t_ls *ls, t_addit *addit, char *data1, struct stat st);
+void	record_stat(t_ls *ls, t_addit *addit, char *data1);
 void		sorting(t_ls **sort);
 void		sorting_bytime(t_ls **ls, char *data1);
+
+void	sorting_bysize(t_ls **ls, char *data1);
+
+void	record_width(t_ls *ls, t_addit *addit);
 
 void	ft_list_reverse(t_ls **begin_list);
 int		check_flags(int ac, char **av, t_addit *addit, int i);
 
 void	record_permission(t_ls *ls, mode_t mode);
-void	choose_time(t_ls *ls, time_t time_m);
+void	choose_time(t_ls *ls, time_t time_m, t_addit *addit);
 void	record_link(t_ls *ls);
 
 void	count_total(t_ls *ls, t_addit *addit);
@@ -77,8 +85,8 @@ void	count_total(t_ls *ls, t_addit *addit);
 t_all		*ft_create_dir(char *data, char *data2);
 void	ft_dir_push_back(t_all **begin_list, char *data, char *data2);
 
+void	print_ls(t_ls *ls, char *name_dir, t_addit *addit);
 
-t_addit		*init_addit(int ac);
 void	clean_list(t_all **all);
 
 void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit);

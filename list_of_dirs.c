@@ -1,12 +1,31 @@
 #include "ft_ls.h"
 
+void		permission_denied(char *path, t_all **all, t_addit *addit)
+{
+	char		**split;
+	struct stat	st;
+	int			i;
+
+	split = NULL;
+	i = 0;
+	lstat(path, &st);
+	if (S_ISDIR(st.st_mode))
+	{
+		split = ft_strsplit(path, '/');
+		while (split[i + 1])
+			i++;
+		if (*all != NULL || addit->flag_file == 1)
+			ft_printf("\n");
+		ft_printf("%s:\nls: %s: Permission denied\n", path, split[i]);
+		free_double_arr(split);
+	}
+}
+
 void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
 {
 	DIR *dir;
 	char 	*path;
 	char *temp_path;
-	char **split;
-	struct stat st;
 
 	if (prev_dir != NULL)
 	{
@@ -19,18 +38,7 @@ void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
 	dir = opendir(path);
 	if (dir == NULL)
 	{
-		lstat(path, &st);
-		if (S_ISDIR(st.st_mode))
-		{
-			int i = 0;
-			split = ft_strsplit(path, '/');
-			while (split[i + 1])
-				i++;
-			if (*all != NULL || addit->flag_file == 1)
-				ft_printf("\n");
-			ft_printf("%s:\nls: %s: Permission denied\n", path, split[i]);
-			free_double_arr(split);
-		}
+		permission_denied(path, all, addit);
 		ft_strdel(&path);
 	}
 	else
@@ -82,4 +90,22 @@ void		ft_dir_push_back(t_all **begin_list, char *data, char *data2)
 			last = last->next;
 		last->next = new_last_elem;
 	}
+}
+
+void		ft_list_reverse(t_ls **begin_list)
+{
+	t_ls *current;
+	t_ls *previous;
+	t_ls *next;
+
+	current = *begin_list;
+	previous = 0;
+	while (current)
+	{
+		next = current->next;
+		current->next = previous;
+		previous = current;
+		current = next;
+	}
+	*begin_list = previous;
 }

@@ -10,7 +10,7 @@ void	record_link(t_ls *ls)
 	temp = ls;
 	temp_link = (char*)malloc(sizeof(char) * (size_t)(ls->size + 1));
 	r = readlink(temp->name_d, temp_link, (size_t)(ls->size + 1));
-	if (r == -1 || r > (size_t)(ls->size + 1))
+	if (r == -1 || r > (ssize_t)(ls->size + 1))
 		return ;
 	temp_link[r] = '\0';
 	temp_name = ft_strjoin(temp->name, " -> ");
@@ -20,28 +20,39 @@ void	record_link(t_ls *ls)
 	ft_strdel(&temp_link);
 }
 
+int 	is_flag(char **av, int i, int j, t_addit *addit)
+{
+	if (av[i][j] == 'l')
+		addit->l = 1;
+	else if (av[i][j] == 'R')
+		addit->cr = 1;
+	else if (av[i][j] == 'a')
+		addit->a = 1;
+	else if (av[i][j] == 'r')
+		addit->r = 1;
+	else if (av[i][j] == 't')
+		addit->t = 1;
+	else if (av[i][j] == 'S')
+		addit->cs = 1;
+	else if (av[i][j] == 'T')
+		addit->ct = 1;
+	else if (av[i][j] == '1')
+		;
+	else
+	{
+		ft_printf("ls: illegal option -- %c\n"
+						  "usage: ls [-Ralrt] [file ...]\n", av[i][j]);
+		return (-1);
+	}
+	return (1);
+}
+
 int		record_flags(char **av, int i, int j, t_addit *addit)
 {
 	while (av[i][j])
 	{
-		if (av[i][j] == 'l')
-			addit->l = 1;
-		else if (av[i][j] == 'R')
-			addit->cr = 1;
-		else if (av[i][j] == 'a')
-			addit->a = 1;
-		else if (av[i][j] == 'r')
-			addit->r = 1;
-		else if (av[i][j] == 't')
-			addit->t = 1;
-		else if (av[i][j] == '1')
-			;
-		else
-		{
-			ft_printf("ls: illegal option -- %c\n"
-			"usage: ls [-Ralrt] [file ...]\n", av[i][j]);
+		if (is_flag(av, i, j, addit) == -1)
 			return (-1);
-		}
 		j++;
 	}
 	return (1);

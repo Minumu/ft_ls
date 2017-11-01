@@ -11,6 +11,8 @@ t_addit		*init_addit(int ac)
 	addit->a = 0;
 	addit->cr = 0;
 	addit->t = 0;
+	addit->cs = 0;
+	addit->ct = 0;
 	addit->flag_dir = 0;
 	addit->flag_file = 0;
 	addit->total = 0;
@@ -53,7 +55,7 @@ void		clean_list(t_all **all)
 	}
 }
 
-void			free_double_arr(char **arr)
+void		free_double_arr(char **arr)
 {
 	int i;
 
