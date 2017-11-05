@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_flags.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:53:56 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 14:13:20 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	record_link(t_ls *ls)
 {
-	t_ls *temp;
-	char *temp_link;
-	char *temp_name;
-	ssize_t r;
+	t_ls	*temp;
+	char	*temp_link;
+	char	*temp_name;
+	ssize_t	r;
 
 	temp = ls;
 	temp_link = (char*)malloc(sizeof(char) * (size_t)(ls->size + 1));
@@ -20,7 +32,7 @@ void	record_link(t_ls *ls)
 	ft_strdel(&temp_link);
 }
 
-int 	is_flag(char **av, int i, int j, t_addit *addit)
+int		is_flag(char **av, int i, int j, t_addit *addit)
 {
 	if (av[i][j] == 'l')
 		addit->l = 1;
@@ -41,7 +53,7 @@ int 	is_flag(char **av, int i, int j, t_addit *addit)
 	else
 	{
 		ft_printf("ls: illegal option -- %c\n"
-						  "usage: ls [-Ralrt] [file ...]\n", av[i][j]);
+				"usage: ls [-RTSalrt] [file ...]\n", av[i][j]);
 		return (-1);
 	}
 	return (1);

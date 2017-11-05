@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_argv.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:51:39 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 11:53:41 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 int		check_empty_av(char **av, int i)
@@ -19,8 +31,8 @@ int		check_empty_av(char **av, int i)
 
 void	printf_noexist(t_ls *avc)
 {
-	struct stat st;
-	t_ls *temp;
+	struct stat	st;
+	t_ls		*temp;
 
 	temp = avc;
 	while (temp)
@@ -33,20 +45,17 @@ void	printf_noexist(t_ls *avc)
 
 void	record_files(t_ls *avc, t_ls **ls, t_addit *addit)
 {
-	struct stat st;
-	DIR *dir;
-	t_ls *temp;
+	struct stat	st;
+	DIR			*dir;
+	t_ls		*temp;
 
 	temp = avc;
 	while (temp)
 	{
 		dir = opendir(temp->name);
-		 if (dir == NULL && lstat(temp->name, &st) == 0 &&
+		if (dir == NULL && lstat(temp->name, &st) == 0 &&
 			!(S_ISDIR(st.st_mode)))
-		 {
-			 printf("FUCK\n");
-			 ft_list_push_back(ls, temp->name);
-		 }
+			ft_list_push_back(ls, temp->name);
 		if (dir != NULL)
 			closedir(dir);
 		temp = temp->next;
