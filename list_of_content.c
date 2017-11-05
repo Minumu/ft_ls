@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_of_content.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:49:12 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 11:49:34 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	help_record_stat(t_ls *temp, t_addit *addit)
 {
 	struct stat st;
 
-	lstat(temp->name_d, &st);
+	if (lstat(temp->name_d, &st) == -1)
+		addit->err = 1;
 	temp->block = st.st_blocks;
 	temp->link = st.st_nlink;
 	temp->mode = st.st_mode;
@@ -38,8 +51,8 @@ void	record_stat(t_ls *ls, t_addit *addit, char *data1)
 
 t_ls	*begin_ls(DIR *dir, char *name_dir, t_addit *addit)
 {
-	t_dir *sd;
-	t_ls *ls;
+	t_dir	*sd;
+	t_ls	*ls;
 
 	ls = NULL;
 	while ((sd = readdir(dir)) != NULL)

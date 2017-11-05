@@ -1,11 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sorting_ls.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:55:31 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 11:57:04 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	do_sorting_bysize(t_ls **ls)
 {
 	t_ls	*curr;
 	t_ls	*next;
-	char	*temp;
-	off_t	size_t;
 
 	curr = *ls;
 	while (curr)
@@ -13,15 +23,7 @@ void	do_sorting_bysize(t_ls **ls)
 		next = curr->next;
 		while (next)
 		{
-			if (curr->size < next->size)
-			{
-				size_t = curr->size;
-				curr->size = next->size;
-				next->size = size_t;
-				temp = curr->name;
-				curr->name = next->name;
-				next->name = temp;
-			}
+			sorting_identical_size(curr, next);
 			next = next->next;
 		}
 		curr = curr->next;
@@ -56,8 +58,6 @@ void	do_sorting_bytime(t_ls **ls)
 {
 	t_ls	*curr;
 	t_ls	*next;
-	char	*temp;
-	time_t	temp_t;
 
 	curr = *ls;
 	while (curr)
@@ -65,15 +65,7 @@ void	do_sorting_bytime(t_ls **ls)
 		next = curr->next;
 		while (next)
 		{
-			if (curr->m_time < next->m_time)
-			{
-				temp_t = curr->m_time;
-				curr->m_time = next->m_time;
-				next->m_time = temp_t;
-				temp = curr->name;
-				curr->name = next->name;
-				next->name = temp;
-			}
+			sorting_identical_time(curr, next);
 			next = next->next;
 		}
 		curr = curr->next;
@@ -82,10 +74,10 @@ void	do_sorting_bytime(t_ls **ls)
 
 void	sorting_bytime(t_ls **ls, char *data1)
 {
-	char *temp_d;
-	char *dir;
-	t_ls *temp;
-	struct stat st;
+	char		*temp_d;
+	char		*dir;
+	t_ls		*temp;
+	struct stat	st;
 
 	temp = *ls;
 	while (temp)
@@ -97,7 +89,7 @@ void	sorting_bytime(t_ls **ls, char *data1)
 		dir = ft_strjoin(temp_d, temp->name);
 		ft_strdel(&temp_d);
 		lstat(dir, &st);
-		temp->m_time = st.st_mtime;
+		temp->m_time = st.st_mtimespec.tv_sec;
 		temp = temp->next;
 		ft_strdel(&dir);
 	}

@@ -6,7 +6,7 @@
 #    By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:47:54 by tshevchu          #+#    #+#              #
-#    Updated: 2017/10/15 15:23:12 by tshevchu         ###   ########.fr        #
+#    Updated: 2017/11/01 14:02:07 by tshevchu         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -16,7 +16,7 @@ FLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft/
 
-OBJECTS = init_structs.o list_of_content.o list_of_dirs.o long_format_ls.o long_format_ls2.o ls_argv.o ls_flags.o main.o sorting_ls.o
+OBJECTS = init_structs.o list_of_content.o list_of_dirs.o long_format_ls.o long_format_ls2.o ls_argv.o ls_flags.o main.o sorting_ls.o sorting_identical.o
 
 all: $(NAME)
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_structs.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:48:44 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 11:48:47 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 t_addit		*init_addit(int ac)
@@ -13,6 +25,7 @@ t_addit		*init_addit(int ac)
 	addit->t = 0;
 	addit->cs = 0;
 	addit->ct = 0;
+	addit->err = 0;
 	addit->flag_dir = 0;
 	addit->flag_file = 0;
 	addit->total = 0;

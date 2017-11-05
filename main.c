@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:54:39 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 19:25:15 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	print_l(t_ls *temp, t_addit *addit)
@@ -8,21 +20,6 @@ void	print_l(t_ls *temp, t_addit *addit)
 	ft_printf("%*-s  ", addit->width[3], getgrgid(temp->gid)->gr_name);
 	ft_printf("%*lli ", addit->width[1], temp->size);
 	ft_printf("%s ", temp->time);
-}
-
-void	print_root(char *name_dir)
-{
-	int i;
-
-	i = 0;
-	if (name_dir[0] == '/' && name_dir[1] == '/' && name_dir[2] != '/')
-	{
-		while (name_dir[++i])
-			ft_printf("%c", name_dir[i]);
-		ft_printf(":\n");
-	}
-	else
-		ft_printf("%s:\n", name_dir);
 }
 
 void	print_ls(t_ls *ls, char *name_dir, t_addit *addit)
@@ -53,11 +50,18 @@ void	print_ls(t_ls *ls, char *name_dir, t_addit *addit)
 	}
 }
 
-
+void	flag_cr(t_ls *ls_temp, t_addit *addit, t_all **all, t_all *temp)
+{
+	if (addit->a == 1 && ft_strcmp(ls_temp->name, ".") != 0 &&
+		ft_strcmp(ls_temp->name, "..") != 0 && !S_ISLNK(ls_temp->mode))
+		start_check_dir(ls_temp->name, all, temp->name_dir, addit);
+	else if (ls_temp->name[0] != '.' && !S_ISLNK(ls_temp->mode))
+		start_check_dir(ls_temp->name, all, temp->name_dir, addit);
+}
 
 void	do_ls(DIR *dir, char *path, t_all **all, t_addit *addit)
 {
-	t_all *temp;
+	t_all	*temp;
 	t_ls	*ls_temp;
 
 	temp = *all;
@@ -66,19 +70,20 @@ void	do_ls(DIR *dir, char *path, t_all **all, t_addit *addit)
 	temp->ls = begin_ls(dir, path, addit);
 	ls_temp = temp->ls;
 	closedir(dir);
-	print_ls(temp->ls, temp->name_dir, addit);
-	if (addit->cr == 1)
+	if (addit->err == 1)
+		permission_denied(ls_temp->name_d, all, addit);
+	else
 	{
-		while (ls_temp)
+		print_ls(temp->ls, temp->name_dir, addit);
+		if (addit->cr == 1)
 		{
-			if (addit->a == 1 && ft_strcmp(ls_temp->name, ".") != 0 &&
-					ft_strcmp(ls_temp->name, "..") != 0)
-				start_check_dir(ls_temp->name, all, temp->name_dir, addit);
-			else if (ls_temp->name[0] != '.' && !S_ISLNK(ls_temp->mode))
-				start_check_dir(ls_temp->name, all, temp->name_dir, addit);
-			ls_temp = ls_temp->next;
+			while (ls_temp)
+			{
+				flag_cr(ls_temp, addit, all, temp);
+				ls_temp = ls_temp->next;
+			}
+			clean_list(all);
 		}
-		clean_list(all);
 	}
 	ft_strdel(&path);
 }

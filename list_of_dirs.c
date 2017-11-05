@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_of_dirs.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshevchu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/01 11:49:51 by tshevchu          #+#    #+#             */
+/*   Updated: 2017/11/01 19:25:44 by tshevchu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <CoreAudio/CoreAudio.h>
 #include "ft_ls.h"
 
 void		permission_denied(char *path, t_all **all, t_addit *addit)
@@ -9,23 +22,29 @@ void		permission_denied(char *path, t_all **all, t_addit *addit)
 	split = NULL;
 	i = 0;
 	lstat(path, &st);
-	if (S_ISDIR(st.st_mode))
+	if (S_ISDIR(st.st_mode) || addit->err == 1)
 	{
 		split = ft_strsplit(path, '/');
 		while (split[i + 1])
 			i++;
-		if (*all != NULL || addit->flag_file == 1)
+		if ((*all != NULL || addit->flag_file == 1))
 			ft_printf("\n");
-		ft_printf("%s:\nls: %s: Permission denied\n", path, split[i]);
+		print_root_perm(path, addit);
+		ft_printf("ls: %s: Permission denied\n", split[i]);
 		free_double_arr(split);
+		if (*all == NULL)
+			addit->err = 1;
+		else
+			addit->err = 0;
 	}
 }
 
-void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
+void		start_check_dir(char *av, t_all **all, char *prev_dir,
+t_addit *addit)
 {
-	DIR *dir;
-	char 	*path;
-	char *temp_path;
+	DIR		*dir;
+	char	*path;
+	char	*temp_path;
 
 	if (prev_dir != NULL)
 	{
@@ -35,8 +54,7 @@ void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
 	}
 	else
 		path = ft_strdup(av);
-	dir = opendir(path);
-	if (dir == NULL)
+	if ((dir = opendir(path)) == NULL)
 	{
 		permission_denied(path, all, addit);
 		ft_strdel(&path);
@@ -52,8 +70,8 @@ void		start_check_dir(char *av, t_all **all, char *prev_dir, t_addit *addit)
 
 t_all		*ft_create_dir(char *data, char *data2)
 {
-	t_all *new_elem;
-	char *temp;
+	t_all	*new_elem;
+	char	*temp;
 
 	temp = NULL;
 	new_elem = malloc(sizeof(t_all));
